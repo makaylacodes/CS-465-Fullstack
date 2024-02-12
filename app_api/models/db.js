@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 // Might need to add a semicolon
-const host = process.env.DB_HOST || `128.0.0.1`;
+const host = process.env.DB_HOST || `127.0.0.1`;
 const dbURI = "mongodb://127.0.0.1/travlr";
 const readLine = require('readline');
 
@@ -10,7 +10,8 @@ const readLine = require('readline');
 const connect = () => {
     setTimeout(() => mongoose.connect(dbURI, {
         useNewUrlParser: true,
-        useCreateIndex: true
+        useCreateIndex: true,
+        useUnifiedTopology: true
     }), 1000);
 }
 mongoose.connection.on('connected', () => {                 2

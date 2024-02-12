@@ -1,14 +1,51 @@
-var fs = require('fs');
+// File changes because changing from an API to use json, using our own api to pull trips
+const request = require('request');
+const apiOptions = {
+    server: 'http://localhost:3000'
+}
 
-var trips = JSON.parse(fs.readFileSync('./data/trips.json', 'utf8'));
 
-/* Get travel view */
+/* internal method to render the travel list */
+const renderTravelList = (req, res, responseBody) => {
+    let message = null;
+    let pageTitle = process.env.npm_package_description + ' - Travel';
+    if(!(responseBody instanceof Array)){
+        message = 'API lookup error';
+        responseBody = [];
+    } else{
+        if(!responseBody.length){
+            message = 'No trips exist in our database!';
+        }
+    }
+    res.render('travel', 
+    {
+        title: pageTitle,
+        trips: responseBody,
+        message
+    });
+}
 
-const travel = (req, res) => {
-    res.render('travel', { title: 'Travlr Getaways', trips});
+/* GET travel list view */
+
+const travelList = (req, res) => {
     // passes trips' data to Handlebars view
+    const path = '/api/trips';
+    const requestOptions = {
+        url: `${apiOptions.server}${path}`,
+        method: 'GET',
+        json: {},
+    };
+    console.info('>> travelController.travelList calling ' + requestOptions.url);
+    request(
+        requestOptions,
+        (err, { statusCode }, body) => {
+            if(err) {
+                console.error(err);
+            }
+            renderTravelList(req, res, body);
+        });
 };
 
 module.exports = {
-    travel
+    travelList
 };
