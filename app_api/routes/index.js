@@ -1,16 +1,18 @@
-var express = require('express');
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 
-const tripsCtrl = require('../controllers/trips');
-
-//Mistakenly wrote tripsList as the url link but it should have been just trips
-router
-    .route('/trips')
-    .get(tripsCtrl.tripsList);
+const tripsController = require("../controllers/trips");
 
 router
-    .route('/trips/:tripCode')
-    .get(tripsCtrl.tripsFindByCode);
+  .route("/trips")
+  .get(tripsController.tripsList)
+  .post(tripsController.tripsAddTrip);
 
-    
+router
+  .route("/trips/:tripCode")
+  .get(tripsController.tripsList)
+  .put(tripsController.tripsUpdateTrip);
+
+// router.route("/trips/:tripCode").get(tripsController.tripsFindCode);
+
 module.exports = router;
