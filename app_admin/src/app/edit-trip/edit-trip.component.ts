@@ -22,12 +22,11 @@ export class EditTripComponent implements OnInit {
     // retrieve stashed tripId
     let tripCode = localStorage.getItem("tripCode");
     if (!tripCode) {
-      alert("Something wrong, couldn't find where I stashed tripCode!");
+      alert("Something wrong, find tripCode!");
       this.router.navigate([""]);
       return;
     }
-    console.log("EditTripComponent#onInit found tripCode " + tripCode);
-    // initialize form
+    
     this.editForm = this.formBuilder.group({
       _id: [],
       code: [tripCode, Validators.required],
